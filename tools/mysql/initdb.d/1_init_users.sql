@@ -1,0 +1,5 @@
+INSERT INTO `accounts_user` (`id`, `name`, `email`, `password`, `salt`, `urltoken`, `status`, `created_at`) VALUES
+(1, 'one', 'abs962@hotsoup.be', '5fd2216580b9f41e56115713a79a68526152211035316b7749b46ab1f1423458', 'zpZl/kXVy64jmVCW8VZfamqq7VSCEQJzfyTmJGlJf8g=', 'fdcc11dab4e44d5fae270b45429c56ee', 1, '2022-02-11 15:02:36.201087'),
+(2, 'two', 'abs962@hotsoup.be', '13f1f1243e9e6e00c5326bcca3485d18d0424b2ea1564e326e2cad2218bef72a', 'hDb9dmxZqIBarilgDignAnmvvF6lCQuVfzTht4bvx7o=', '75000b04940541168415843b3ece7fa8', 1, '2022-02-11 15:04:11.811560'),
+(3, 'three', 'abs962@hotsoup.be', '713ae3f11222c7cbcb24f04c9c37fc817822b9b0273b2fdb529d5c5252a98bde', 'bzRVpwcvU6Z3o7qlQePerCBZMcR8pnKpEYnqOeHZ/78=', '6fb1899624254985bafd651dd32d6b0e', 1, '2022-02-11 15:04:23.087777'),
+(4, 'four', 'abs962@hotsoup.be', 'c7f3d0480f7ad5d086e319e0bbc804a7935412cb2c927ed04b2f2d71514bd5a5', '7o/MjWekun6KiaIOVVYeIDHbc6EHIyAE0ehgbDYot/A=', 'fd4637ded1da44068ab5ee15ed7cdd45', 1, '2022-02-11 15:07:20.981162');
