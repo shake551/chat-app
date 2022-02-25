@@ -15,15 +15,6 @@ from accounts.utils.auth import JWTAuthentication
 from accounts.utils.auth import obtain_id_from_jwt
 
 
-def index(request):
-    return render(request, 'chat/index.html', {})
-
-def room(request, room_name):
-    return render(request, 'chat/room.html', {
-        'room_name': room_name
-    })
-
-
 def obtain_user(user_name):
     if User.objects.filter(name=user_name).exists():
         user_query = User.objects.get(name=user_name)
