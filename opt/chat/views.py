@@ -15,23 +15,31 @@ from accounts.utils.auth import JWTAuthentication
 from accounts.utils.auth import obtain_id_from_jwt
 
 
-def obtain_user(user_name):
-    if User.objects.filter(name=user_name).exists():
-        user_query = User.objects.get(name=user_name)
+def index(request):
+    return render(request, 'chat/index.html', {})
+
+def room(request, room_name):
+    return render(request, 'chat/room.html', {
+        'room_name': room_name
+    })
+
+
+def obtain_user(user_id):
+    if User.objects.filter(pk=user_id).exists():
+        user_query = User.objects.get(pk=user_id)
         return user_query
     return Exception('user not found')
 
-
-def obtain_room(room_name):
-    if Room.objects.filter(name=room_name).exists():
-        room_query = Room.objects.get(name=room_name)
+def obtain_room(room_id):
+    if Room.objects.filter(pk=room_id).exists():
+        room_query = Room.objects.get(pk=room_id)
         return room_query
     raise Exception('room not found')
 
 
-def add_user(room_name, user_name):
-    user_query = obtain_user(user_name)
-    room_query = obtain_room(room_name)
+def add_user(room_id, user_id):
+    user_query = obtain_user(user_id)
+    room_query = obtain_room(room_id)
     serializer = RoomMemberSerializer(data={
         'room': room_query.id,
         'user': user_query.id
@@ -85,9 +93,9 @@ def create_room(request):
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def post_msg(request):
-    user_query = obtain_user(request.data['user_name'])
-    room_query = obtain_room(request.data['room_name'])
-
+    user_query = obtain_user(request.data['user_id'])
+    room_query = obtain_room(request.data['room_id'])
+    
     serializer = RoomMessageSerializer(data={
         'message': request.data['msg'],
         'room': room_query.id,
@@ -155,7 +163,6 @@ def obtain_user_rooms(request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def obtain_room_msg(request, room_id):
-    print(request.data['room_name'])
     if not Room.objects.filter(pk=room_id):
         return JsonResponse({"message": 'no room'}, status=400)
 
@@ -171,7 +178,7 @@ def obtain_room_msg(request, room_id):
     res = {
         "room": {
             "room_id": room_id,
-            "name": request.data['room_name'],
+            "name": all_message_query[0].room.name,
         },
         "messages": messages,
         "token": token
