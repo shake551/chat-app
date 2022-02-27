@@ -80,7 +80,14 @@ class JWTAuthentication(BaseAuthentication):
                 user_query = User.objects.get(pk=userid)
                 user_query.is_authenticated = True
                 print(user_query)
-                return (user_query, jwt_token)
+                access_token = generate_token(user_query, 60 * 60)
+                refresh_token = generate_token(user_query, 60 * 60 * 24)
+
+                token_set = {
+                    'refresh_token': refresh_token,
+                    'access_token': access_token,
+                }
+                return (user_query, token_set)
             except:
                 msg = "no user"
                 raise exceptions.AuthenticationFailed(msg)

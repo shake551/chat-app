@@ -55,16 +55,18 @@ def add_user(room_id, user_id):
 
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @csrf_exempt
 def create_room(request):
     room_name = request.data['room_name']
     room_members = request.data['room_members']
-    
+
     res = {}
     try:
         with transaction.atomic():
             serializer = RoomSerializer(data={
-                'name': room_name, 
+                'name': room_name,
                 'member_count': len(room_members)
             })
             if serializer.is_valid():
@@ -80,11 +82,15 @@ def create_room(request):
                 room_member = add_user(room_name, name)
                 users.append(room_member)
             res['users'] = users
+            res['token'] = request.auth
             return JsonResponse(res, status=201)
     except Exception as e:
         return JsonResponse(e, status=400)
 
+
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @csrf_exempt
 def post_msg(request):
     user_query = obtain_user(request.data['user_id'])
@@ -100,8 +106,11 @@ def post_msg(request):
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
 
+
 # 全roomの取得
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def obtain_all_rooms(request):
     if not Room.objects.all().exists():
         return JsonResponse({"message": 'no room'}, status=400)
@@ -114,7 +123,10 @@ def obtain_all_rooms(request):
             "room_name": room.name
         }
         rooms.append(tmp_room)
-    res = {"rooms": rooms}
+    res = {
+        "rooms": rooms,
+        "token": request.auth
+    }
     return JsonResponse(res, status=201)
 
 
@@ -125,11 +137,11 @@ def obtain_all_rooms(request):
 def obtain_user_rooms(request):
     # jwtからユーザーIDを取得
     user_id = obtain_id_from_jwt(request)
-    
+
     # 所属しているroomがなければ空を返す
     if not RoomMember.objects.filter(user_id=user_id):
         return JsonResponse({"rooms": []}, status=201)
-    
+
     user_rooms = RoomMember.objects.filter(user_id=user_id)
 
     rooms = []
@@ -139,16 +151,21 @@ def obtain_user_rooms(request):
             "room_name": user_room.room.name
         }
         rooms.append(tmp_room)
-    res = {"rooms": rooms}
+    res = {
+        "rooms": rooms,
+        "token": request.auth
+    }
     return JsonResponse(res, status=201)
 
 
 # ルームのメッセージ取得
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def obtain_room_msg(request, room_id):
     if not Room.objects.filter(pk=room_id):
         return JsonResponse({"message": 'no room'}, status=400)
-    
+
     all_message_query = RoomMessage.objects.filter(room_id=room_id)
     messages = []
     for message in all_message_query:
@@ -163,6 +180,7 @@ def obtain_room_msg(request, room_id):
             "room_id": room_id,
             "name": all_message_query[0].room.name,
         },
-        "messages": messages
+        "messages": messages,
+        "token": token
     }
     return JsonResponse(res, status=200)
