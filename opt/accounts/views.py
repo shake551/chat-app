@@ -105,6 +105,7 @@ def token(request):
         "user": {
             "id": request.user.id,
             "name": request.user.name,
-        }
+        },
+        'token': request.auth
     }
     return JsonResponse(response, status=200)
