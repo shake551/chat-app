@@ -181,6 +181,6 @@ def obtain_room_msg(request, room_id):
             "name": all_message_query[0].room.name,
         },
         "messages": messages,
-        "token": token
+        "token": request.auth
     }
     return JsonResponse(res, status=200)
