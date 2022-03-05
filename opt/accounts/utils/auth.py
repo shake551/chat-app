@@ -1,7 +1,6 @@
 from config.settings import SECRET_KEY
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework import exceptions
-from django.http import JsonResponse
 
 import time
 import jwt
@@ -18,6 +17,7 @@ def hash_password(my_password, salt):
         salt = salt.encode('utf-8')
     safe_pass = hashlib.sha256(salt + password).hexdigest()
     return safe_pass
+
 
 # ユーザーのクエリを入力しtokenを返す
 def generate_token(user_query, setting_time):

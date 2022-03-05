@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -15,20 +14,12 @@ from accounts.utils.auth import JWTAuthentication
 from accounts.utils.auth import obtain_id_from_jwt
 
 
-def index(request):
-    return render(request, 'chat/index.html', {})
-
-def room(request, room_name):
-    return render(request, 'chat/room.html', {
-        'room_name': room_name
-    })
-
-
 def obtain_user(user_id):
     if User.objects.filter(pk=user_id).exists():
         user_query = User.objects.get(pk=user_id)
         return user_query
     return Exception('user not found')
+
 
 def obtain_room(room_id):
     if Room.objects.filter(pk=room_id).exists():
