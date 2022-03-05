@@ -2,13 +2,11 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 import uuid
 import os
 import base64
-import hashlib
 import re
 import datetime as dt
 
@@ -64,6 +62,7 @@ def pre_signup(request):
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
 
+
 # 本登録URLにアクセスがあったときに本登録を完了する
 @api_view(['GET'])
 def verify_user(request):
@@ -96,6 +95,7 @@ def verify_user(request):
 @authentication_classes([NormalAuthentication])
 def loginApi(request):
     return JsonResponse({"token":request.user}, status=201)
+
 
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
