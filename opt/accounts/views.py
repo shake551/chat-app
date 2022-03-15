@@ -51,7 +51,7 @@ def pre_signup(request):
 
     if serializer.is_valid():
         new_data = serializer.save()
-        verify_url = 'http://0.0.0.0:8000/api/accounts/verify?token=' + str(new_data.urltoken)
+        verify_url = 'http://localhost:3000/verify/' + str(new_data.urltoken)
         send_mail(
             '本登録のお願い',
             '以下のリンクにアクセスして本登録を完了してください\n' + verify_url,
