@@ -69,8 +69,8 @@ def create_room(request):
                 }
 
             users = []
-            for name in room_members:
-                room_member = add_user(room_name, name)
+            for user_id in room_members:
+                room_member = add_user(res['room']['id'], user_id)
                 users.append(room_member)
             res['users'] = users
             res['token'] = request.auth
