@@ -117,8 +117,7 @@ def token(request):
 @permission_classes([IsAuthenticated])
 def obtain_all_users(request):
     my_user_id = obtain_id_from_jwt(request)
-    users = User.objects.values('id', 'name').exclude(id = my_user_id)
-    users = list(users)
+    users = list(User.objects.values('id', 'name').exclude(id = my_user_id))
     
     response = {
         "users": users,
