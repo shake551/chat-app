@@ -12,7 +12,7 @@ import datetime as dt
 
 from .models import User
 from .serializer import UserSerializer
-from .utils.auth import NormalAuthentication
+from .utils.auth import NormalAuthentication, obtain_id_from_jwt
 from .utils.auth import JWTAuthentication
 from .utils.auth import hash_password
 
@@ -108,4 +108,21 @@ def token(request):
         },
         'token': request.auth
     }
+    return JsonResponse(response, status=200)
+
+
+# 自分以外のユーザーのid,nameを取得する
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def obtain_all_users(request):
+    my_user_id = obtain_id_from_jwt(request)
+    users = User.objects.values('id', 'name').exclude(id = my_user_id)
+    users = list(users)
+    
+    response = {
+        "users": users,
+        'token': request.auth
+    }
+
     return JsonResponse(response, status=200)
