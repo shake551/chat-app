@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User
+from opt.accounts.models.user import User
 
 
 class UserSerializer(serializers.ModelSerializer):

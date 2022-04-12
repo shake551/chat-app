@@ -10,7 +10,7 @@ import base64
 import re
 import datetime as dt
 
-from .models import User
+from opt.accounts.models.user import User
 from .serializer import UserSerializer
 from .utils.auth import NormalAuthentication, obtain_id_from_jwt
 from .utils.auth import JWTAuthentication

@@ -7,7 +7,7 @@ import jwt
 import hashlib
 import json
 
-from ..models import User
+from opt.accounts.models.user import User
 
 
 # 生のパスワードとsaltでハッシュ化する
