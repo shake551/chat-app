@@ -9,7 +9,10 @@ import os
 import base64
 import datetime as dt
 
-from opt.accounts.models.user import User
+import sys
+
+sys.path.append('../')
+from accounts.models.user import User
 from .serializer import UserSerializer
 from .utils.auth import NormalAuthentication, obtain_id_from_jwt, check_uuid_format
 from .utils.auth import JWTAuthentication

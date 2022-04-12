@@ -10,7 +10,7 @@ from .serializer import RoomSerializer, RoomMemberSerializer, RoomMessageSeriali
 import sys
 
 sys.path.append('../')
-from accounts.models import User
+from accounts.models.user import User
 from accounts.utils.auth import JWTAuthentication
 from accounts.utils.auth import obtain_id_from_jwt
 

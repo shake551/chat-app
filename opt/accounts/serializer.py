@@ -1,6 +1,8 @@
 from rest_framework import serializers
+import sys
 
-from opt.accounts.models.user import User
+sys.path.append('../')
+from accounts.models.user import User
 
 
 class UserSerializer(serializers.ModelSerializer):

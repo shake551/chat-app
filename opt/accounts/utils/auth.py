@@ -7,8 +7,10 @@ import jwt
 import hashlib
 import json
 import re
+import sys
 
-from opt.accounts.models.user import User
+sys.path.append('../')
+from accounts.models.user import User
 
 
 # 引数がuuid形式であればTrue, それ以外はFalseを返す
