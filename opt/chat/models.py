@@ -3,7 +3,7 @@ from django.db import models
 import sys
 
 sys.path.append('../')
-from accounts.models import User
+from accounts.models.user import User
 
 
 class Room(models.Model):
