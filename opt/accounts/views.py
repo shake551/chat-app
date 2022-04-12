@@ -7,30 +7,13 @@ from rest_framework.permissions import IsAuthenticated
 import uuid
 import os
 import base64
-import re
 import datetime as dt
 
 from opt.accounts.models.user import User
 from .serializer import UserSerializer
-from .utils.auth import NormalAuthentication, obtain_id_from_jwt
+from .utils.auth import NormalAuthentication, obtain_id_from_jwt, check_uuid_format
 from .utils.auth import JWTAuthentication
 from .utils.auth import hash_password
-
-
-# 引数がuuid形式であればTrue, それ以外はFalseを返す
-def check_uuid_format(confirmed_text):
-    match_text = re.search(
-        r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
-        confirmed_text
-    )
-    print(match_text)
-    if not match_text:
-        print('not match')
-        return False
-    if match_text.group(0) == confirmed_text:
-        return True
-    print('not exist')
-    return False
 
 
 @api_view(['POST'])

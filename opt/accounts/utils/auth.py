@@ -6,8 +6,25 @@ import time
 import jwt
 import hashlib
 import json
+import re
 
 from opt.accounts.models.user import User
+
+
+# 引数がuuid形式であればTrue, それ以外はFalseを返す
+def check_uuid_format(confirmed_text):
+    match_text = re.search(
+        r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+        confirmed_text
+    )
+    print(match_text)
+    if not match_text:
+        print('not match')
+        return False
+    if match_text.group(0) == confirmed_text:
+        return True
+    print('not exist')
+    return False
 
 
 # 生のパスワードとsaltでハッシュ化する
