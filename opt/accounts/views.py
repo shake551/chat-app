@@ -37,16 +37,16 @@ def check_uuid_format(confirmed_text):
 @csrf_exempt
 def pre_signup(request):
     salt = base64.b64encode(os.urandom(32))
-    
+
     insert_data = {
-        'name': request.data['name'], 
+        'name': request.data['name'],
         'email': request.data['email'],
         # salt と password を結合してハッシュ化
         'password': hash_password(request.data['password'], salt),
         'urltoken': uuid.uuid4(),
         'salt': salt.decode('utf-8'),
     }
-    
+
     serializer = UserSerializer(data=insert_data)
 
     if serializer.is_valid():
@@ -67,34 +67,34 @@ def pre_signup(request):
 @api_view(['GET'])
 def verify_user(request):
     if not 'token' in request.GET:
-        return JsonResponse({"message":"cannot receive token"}, status=400)
-    
+        return JsonResponse({"message": "cannot receive token"}, status=400)
+
     got_token = request.GET.get('token')
-    
+
     # uuidのformatが不正であればエラーを返す
     if not check_uuid_format(got_token):
-        return JsonResponse({"message":"token is not valid"}, status=400)
-    
+        return JsonResponse({"message": "token is not valid"}, status=400)
+
     if User.objects.filter(urltoken=got_token).exists():
         user_query = User.objects.get(urltoken=got_token)
 
         # (現在時間) > (タイムスタンプ + 1日)ならばtokenは無効
         effective_date = user_query.created_at + dt.timedelta(days=1)
         if dt.datetime.now() > effective_date:
-            return JsonResponse({"message":"token is not valid"}, status=200)
-        
+            return JsonResponse({"message": "token is not valid"}, status=200)
+
         # ユーザー本登録の完了
         user_query.status = 1
         user_query.save()
-        return JsonResponse({"message":"ok"}, status=201)
-    return JsonResponse({"message":"token is not valid"}, status=400)
+        return JsonResponse({"message": "ok"}, status=201)
+    return JsonResponse({"message": "token is not valid"}, status=400)
 
 
 @csrf_exempt
 @api_view(['POST'])
 @authentication_classes([NormalAuthentication])
 def loginApi(request):
-    return JsonResponse({"token":request.user}, status=201)
+    return JsonResponse({"token": request.user}, status=201)
 
 
 @api_view(['GET'])
@@ -117,8 +117,8 @@ def token(request):
 @permission_classes([IsAuthenticated])
 def obtain_all_users(request):
     my_user_id = obtain_id_from_jwt(request)
-    users = list(User.objects.values('id', 'name').exclude(id = my_user_id))
-    
+    users = list(User.objects.values('id', 'name').exclude(id=my_user_id))
+
     response = {
         "users": users,
         'token': request.auth
