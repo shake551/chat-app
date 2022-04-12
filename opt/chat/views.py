@@ -8,6 +8,7 @@ from .models import Room, RoomMessage, RoomMember
 from .serializer import RoomSerializer, RoomMemberSerializer, RoomMessageSerializer
 
 import sys
+
 sys.path.append('../')
 from accounts.models import User
 from accounts.utils.auth import JWTAuthentication
@@ -86,7 +87,7 @@ def create_room(request):
 def post_msg(request):
     user_query = obtain_user(request.data['user_id'])
     room_query = obtain_room(request.data['room_id'])
-    
+
     serializer = RoomMessageSerializer(data={
         'message': request.data['msg'],
         'room': room_query.id,

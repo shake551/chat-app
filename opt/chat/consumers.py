@@ -16,14 +16,12 @@ class ChatConsumer(WebsocketConsumer):
 
         self.accept()
 
-
     def disconnect(self, close_code):
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
         )
-
 
     # Receive message from WebSocket
     def receive(self, text_data):
@@ -40,7 +38,6 @@ class ChatConsumer(WebsocketConsumer):
                 'send_user': send_user
             }
         )
-
 
     # Receive message from room group
     def chat_message(self, event):

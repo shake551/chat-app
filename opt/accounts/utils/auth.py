@@ -23,30 +23,29 @@ def hash_password(my_password, salt):
 def generate_token(user_query, setting_time):
     time_limit = int(time.time()) + setting_time
     return jwt.encode(
-        {"userid": user_query.pk, "name":user_query.name, "exp":time_limit},
+        {"userid": user_query.pk, "name": user_query.name, "exp": time_limit},
         SECRET_KEY
     ).decode('utf-8')
 
 
-# ログイン認証クラス
-"""ログインできた場合 access token を返す"""
+# ログイン認証クラス、ログインできた場合 access token を返す
 class NormalAuthentication(BaseAuthentication):
     def authenticate(self, request):
         res = json.loads(request.body.decode('utf-8'))
         name = res['name']
         password = res['password']
         user_query = User.objects.get(name=name)
-        
+
         if not user_query:
             raise exceptions.AuthenticationFailed('認証失敗')
-        
+
         confirmed_password = hash_password(password, user_query.salt)
 
         if confirmed_password != user_query.password:
             raise exceptions.AuthenticationFailed('パスワードあってません')
-        access_token = generate_token(user_query, 60*60)
-        refresh_token = generate_token(user_query, 60*60*24)
-        
+        access_token = generate_token(user_query, 60 * 60)
+        refresh_token = generate_token(user_query, 60 * 60 * 24)
+
         token_set = {
             'refresh_token': refresh_token,
             'access_token': access_token,
@@ -64,14 +63,14 @@ class JWTAuthentication(BaseAuthentication):
 
         if not auth or auth[0].lower() != self.keyword.lower().encode():
             return None
-        
+
         if len(auth) == 1:
             msg = "Authorization 無効"
             raise exceptions.AuthenticationFailed(msg)
         elif len(auth) > 2:
             msg = "Authorization 無効 スペースなし"
             raise exceptions.AuthenticationFailed(msg)
-        
+
         try:
             jwt_token = auth[1]
             jwt_info = jwt.decode(jwt_token, SECRET_KEY)
@@ -105,5 +104,5 @@ def obtain_id_from_jwt(request):
     jwt_token = auth[1]
     jwt_info = jwt.decode(jwt_token, SECRET_KEY)
     user_id = jwt_info.get('userid')
-    
+
     return user_id
