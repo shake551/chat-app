@@ -5,8 +5,8 @@ import datetime as dt
 
 from rest_framework.exceptions import ValidationError
 
-from .user import User
-from ..utils.auth import hash_password
+from accounts.models.user import User
+from accounts.utils.auth import hash_password
 
 
 class UserProxy(User):
