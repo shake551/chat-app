@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.authentication import get_authorization_header
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.forms.models import model_to_dict
@@ -7,9 +8,8 @@ from django.forms.models import model_to_dict
 import sys
 
 sys.path.append('../')
-from accounts.models.user import User
 from .serializer import UserSerializer
-from .utils.auth import NormalAuthentication, obtain_id_from_jwt, check_uuid_format
+from .utils.auth import NormalAuthentication
 from .utils.auth import JWTAuthentication
 
 
@@ -65,12 +65,12 @@ def token(request):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def obtain_all_users(request):
-    my_user_id = obtain_id_from_jwt(request)
-    users = list(User.objects.values('id', 'name').exclude(id=my_user_id))
+def obtain_user_list_exclude_login_user(request):
+    jwt_token = get_authorization_header(request).split()[1]
+    user_serializer = UserSerializer()
 
     response = {
-        "users": users,
+        "users": user_serializer.obtain_user_list_exclude_login_user(jwt_token=jwt_token),
         'token': request.auth
     }
 

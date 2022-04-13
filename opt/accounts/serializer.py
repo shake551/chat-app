@@ -5,7 +5,7 @@ import sys
 sys.path.append('../')
 from accounts.models.user import User
 from accounts.models.user_proxy import UserProxy
-from accounts.utils.auth import check_uuid_format
+from accounts.utils.auth import check_uuid_format, obtain_id_from_jwt
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,3 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return UserProxy.verify(token=token)
 
+    def obtain_user_list_exclude_login_user(self, jwt_token):
+        login_user_id = obtain_id_from_jwt(jwt_token=jwt_token)
+
+        return UserProxy.obtain_user_list_exclude_login_user(login_user_id=login_user_id)

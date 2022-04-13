@@ -118,9 +118,7 @@ class JWTAuthentication(BaseAuthentication):
 
 
 # jwtからユーザーIDを取得する
-def obtain_id_from_jwt(request):
-    auth = get_authorization_header(request).split()
-    jwt_token = auth[1]
+def obtain_id_from_jwt(jwt_token):
     jwt_info = jwt.decode(jwt_token, SECRET_KEY)
     user_id = jwt_info.get('userid')
 

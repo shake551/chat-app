@@ -51,3 +51,6 @@ class UserProxy(User):
 
         return user
 
+    @classmethod
+    def obtain_user_list_exclude_login_user(cls, login_user_id):
+        return list(cls.objects.values('id', 'name').exclude(id=login_user_id))
