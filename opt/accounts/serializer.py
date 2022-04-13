@@ -4,7 +4,7 @@ import sys
 
 sys.path.append('../')
 from accounts.models.user import User
-from accounts.models.user_proxy import UserProxy
+from accounts.models.proxy.user_proxy import UserProxy
 from accounts.utils.auth import check_uuid_format, obtain_id_from_jwt
 
 
