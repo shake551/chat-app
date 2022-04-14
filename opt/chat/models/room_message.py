@@ -3,17 +3,8 @@ from django.db import models
 import sys
 
 sys.path.append('../')
-from accounts.models import User
-
-
-class Room(models.Model):
-    name = models.CharField(max_length=100)
-    member_count = models.IntegerField(default=0)
-
-
-class RoomMember(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+from accounts.models.user import User
+from chat.models.room import Room
 
 
 class RoomMessage(models.Model):
