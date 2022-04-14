@@ -1,4 +1,5 @@
 from chat.models.room_message import RoomMessage
+from django.db.models import F
 
 
 class RoomMessageProxy(RoomMessage):
@@ -23,5 +24,5 @@ class RoomMessageProxy(RoomMessage):
             cls
                 .objects
                 .filter(room_id=room_id)
-                .values('message', 'created_at', 'send_user__name')
+                .values('message', time=F('created_at'), user=F('send_user__name'))
         )

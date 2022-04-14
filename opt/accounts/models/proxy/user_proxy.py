@@ -16,7 +16,7 @@ class UserProxy(User):
     @classmethod
     def obtain_user(cls, user_id):
         if cls.objects.filter(pk=user_id).exists():
-            user_query = cls.objects.get(pk=user_id)
+            user_query = cls.objects.values().get(pk=user_id)
             return user_query
         raise Exception('user not found')
 
@@ -30,7 +30,7 @@ class UserProxy(User):
 
     @classmethod
     def obtain_user_by_token(cls, token):
-        return cls.objects.get(urltoken=token)
+        return cls.objects.values().get(urltoken=token)
 
     @classmethod
     def pre_signup(cls, name, email, password):

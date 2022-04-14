@@ -1,5 +1,7 @@
 import sys
 
+from django.db.models import F
+
 sys.path.append('../')
 from accounts.models.proxy.user_proxy import UserProxy
 from chat.models.room_member import RoomMember
@@ -47,5 +49,5 @@ class RoomMemberProxy(RoomMember):
             cls
                 .objects
                 .filter(user_id=user_id)
-                .values('room__id', 'room__name')
+                .values('room_id', room_name=F('room__name'))
         )
