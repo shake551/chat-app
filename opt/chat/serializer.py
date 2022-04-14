@@ -1,3 +1,4 @@
+from django.forms import model_to_dict
 from rest_framework import serializers
 from django.db import transaction
 
@@ -63,6 +64,11 @@ class ChatSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create_room(cls, room_name, user_id_list):
         new_room = RoomProxy.create(room_name=room_name, member_count=len(user_id_list))
-        room_member = RoomMemberProxy.bulk_add_room_member(room_id=new_room.id, user_id_list=user_id_list)
 
-        return room_member
+        for user_id in user_id_list:
+            if not UserProxy.exists_user_by_user_id(user_id=user_id):
+                raise serializers.ValidationError('user not found')
+
+            RoomMemberProxy.add_room_member(room_id=new_room.id, user_id=user_id)
+
+        return model_to_dict(new_room)

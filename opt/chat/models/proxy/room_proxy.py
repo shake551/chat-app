@@ -1,3 +1,5 @@
+from django.forms import model_to_dict
+
 from chat.models.room import Room
 
 
@@ -12,8 +14,8 @@ class RoomProxy(Room):
     @classmethod
     def obtain_room(cls, room_id):
         if cls.objects.filter(pk=room_id).exists():
-            room_query = cls.objects.values('id', 'name').get(pk=room_id)
-            return room_query
+            room_query = cls.objects.get(pk=room_id)
+            return model_to_dict(room_query)
         raise Exception('room not found')
 
     @classmethod

@@ -1,3 +1,5 @@
+from accounts.models.proxy.user_proxy import UserProxy
+from chat.models.proxy.room_proxy import RoomProxy
 from chat.models.room_message import RoomMessage
 from django.db.models import F
 
@@ -8,10 +10,13 @@ class RoomMessageProxy(RoomMessage):
 
     @classmethod
     def post_message(cls, user_id, room_id, message):
+        room = RoomProxy.obtain_room(room_id=room_id)
+        user = UserProxy.obtain_user(user_id=user_id)
+
         new_message = cls(
             message=message,
-            room=room_id,
-            send_user=user_id
+            room=room,
+            send_user=user
         )
 
         new_message.save()
