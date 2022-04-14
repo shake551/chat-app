@@ -16,8 +16,7 @@ from .utils.auth import JWTAuthentication
 @api_view(['POST'])
 @csrf_exempt
 def pre_signup(request):
-    user_serializer = UserSerializer()
-    user = user_serializer.pre_signup(
+    user = UserSerializer.pre_signup(
         name=request.data['name'],
         email=request.data['email'],
         password=request.data['password']
@@ -34,8 +33,7 @@ def verify_user(request):
 
     got_token = request.GET.get('token')
 
-    user_serializer = UserSerializer()
-    user_serializer.verify(got_token)
+    UserSerializer.verify(got_token)
 
     return JsonResponse({"message": "ok"}, status=201)
 
@@ -67,10 +65,9 @@ def token(request):
 @permission_classes([IsAuthenticated])
 def obtain_user_list_exclude_login_user(request):
     jwt_token = get_authorization_header(request).split()[1]
-    user_serializer = UserSerializer()
 
     response = {
-        "users": user_serializer.obtain_user_list_exclude_login_user(jwt_token=jwt_token),
+        "users": UserSerializer.obtain_user_list_exclude_login_user(jwt_token=jwt_token),
         'token': request.auth
     }
 

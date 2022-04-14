@@ -13,7 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'name', 'email', 'password', 'salt', 'urltoken', 'status']
 
-    def pre_signup(self, name, email, password):
+    @classmethod
+    def pre_signup(cls, name, email, password):
         user = UserProxy.pre_signup(name=name, email=email, password=password)
 
         verify_url = 'http://localhost:3000/verify/' + str(user.urltoken)
@@ -27,7 +28,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-    def verify(self, token):
+    @classmethod
+    def verify(cls, token):
         if not check_uuid_format(token):
             raise serializers.ValidationError('token is not valid')
 
@@ -36,7 +38,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         return UserProxy.verify(token=token)
 
-    def obtain_user_list_exclude_login_user(self, jwt_token):
+    @classmethod
+    def obtain_user_list_exclude_login_user(cls, jwt_token):
         login_user_id = obtain_id_from_jwt(jwt_token=jwt_token)
 
         return UserProxy.obtain_user_list_exclude_login_user(login_user_id=login_user_id)
