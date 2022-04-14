@@ -7,5 +7,5 @@ urlpatterns = [
     path('verify/', views.verify_user),
     path('login/', views.loginApi),
     path('token/', views.token),
-    path('all_users/', views.obtain_all_users),
+    path('all_users/', views.obtain_user_list_exclude_login_user),
 ]
