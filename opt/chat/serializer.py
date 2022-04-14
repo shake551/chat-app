@@ -22,7 +22,7 @@ class ChatSerializer(serializers.ModelSerializer):
             if not RoomProxy.exists_room_by_room_id(room_id=room_id):
                 raise serializers.ValidationError('room is not found')
 
-            return RoomProxy.obtain_room(room_id=room_id)
+            return model_to_dict(RoomProxy.obtain_room(room_id=room_id))
 
         @classmethod
         def obtain_all_room_list(cls):

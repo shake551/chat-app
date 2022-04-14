@@ -15,7 +15,7 @@ class RoomProxy(Room):
     def obtain_room(cls, room_id):
         if cls.objects.filter(pk=room_id).exists():
             room_query = cls.objects.get(pk=room_id)
-            return model_to_dict(room_query)
+            return room_query
         raise Exception('room not found')
 
     @classmethod
