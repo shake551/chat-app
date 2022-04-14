@@ -21,10 +21,10 @@ def create_room(request):
     room_name = request.data['room_name']
     room_members = request.data['room_members']
 
-    users = ChatSerializer.create_room(room_name=room_name, user_id_list=room_members)
+    room = ChatSerializer.create_room(room_name=room_name, user_id_list=room_members)
 
     res = {
-        'users': users,
+        'room': room,
         "token": request.auth
     }
 
@@ -36,13 +36,13 @@ def create_room(request):
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def post_msg(request):
-    message = ChatSerializer.RoomMessageSerializer.post_message(
+    ChatSerializer.RoomMessageSerializer.post_message(
         message=request.data['message'],
         room_id=request.data['room_id'],
         user_id=request.data['user_id']
     )
 
-    return JsonResponse(message, status=201)
+    return JsonResponse({}, status=201)
 
 
 # 全roomの取得
