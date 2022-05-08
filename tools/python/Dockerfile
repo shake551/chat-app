@@ -15,3 +15,7 @@ RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+
+RUN mkdir -p /var/run/gunicorn
+
+CMD ["gunicorn", "config.wsgi", "--bind=unix:/var/run/gunicorn/gunicorn.sock"]
