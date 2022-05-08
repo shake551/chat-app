@@ -19,6 +19,13 @@ upRelease:
 		-f docker-compose-redis.yml \
 		up
 
+updRelease:
+	docker-compose \
+	  -f docker-compose-release.yml \
+		-f docker-compose-mysql-release.yml \
+		-f docker-compose-redis.yml \
+		up -d
+
 down:
 	docker-compose \
 	  -f docker-compose-python.yml \
