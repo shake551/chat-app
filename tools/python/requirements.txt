@@ -9,3 +9,4 @@ pyjwt==1.7.1
 channels==3.0.4
 channels-redis
 django-cors-headers
+gunicorn
