@@ -8,6 +8,8 @@ from .serializer import ChatSerializer
 
 import sys
 
+from .utils.chat_room import change_room_name_to_user_name
+
 sys.path.append('../')
 from accounts.utils.auth import JWTAuthentication
 from accounts.utils.auth import obtain_id_from_jwt
@@ -70,6 +72,8 @@ def obtain_user_rooms(request):
 
     rooms = ChatSerializer.RoomMemberSerializer.obtain_user_room(user_id=user_id)
 
+    change_room_name_to_user_name(rooms=rooms, user_id=user_id)
+
     res = {
         "rooms": rooms,
         "token": request.auth
@@ -85,6 +89,11 @@ def obtain_room_msg(request, room_id):
     messages = ChatSerializer.RoomMessageSerializer.obtain_room_message(room_id=room_id)
 
     room = ChatSerializer.RoomSerializer.obtain_room(room_id=room_id)
+
+    jwt_token = get_authorization_header(request).split()[1]
+    user_id = obtain_id_from_jwt(jwt_token=jwt_token)
+
+    change_room_name_to_user_name(rooms=room, user_id=user_id)
 
     res = {
         "room": room,
