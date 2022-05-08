@@ -1,0 +1,23 @@
+version: '3'
+services:
+  gunicorn:
+    build: .
+    image: gunicorn:20.1.0
+    container_name: gunicorn
+    working_dir: '/root/opt/'
+    volumes:
+      - ./opt:/root/opt
+      - gunicorn:/var/run/gunicorn
+  nginx:
+    image: nginx:1.17.7
+    container_name: nginx
+    depends_on:
+      - gunicorn
+    ports:
+      - "80:80"
+    volumes:
+      - ./tools/gunicorn/gunicorn.conf:/etc/nginx/conf.d/default.conf
+      - gunicorn:/var/run/gunicorn
+volumes:
+  gunicorn:
+    driver: local
