@@ -1,7 +1,7 @@
 version: '3'
 services:
   gunicorn:
-    build: .tools/python
+    build: ./tools/python
     image: gunicorn:20.1.0
     container_name: gunicorn
     working_dir: '/root/opt/'
