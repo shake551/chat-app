@@ -40,6 +40,13 @@ class ChatSerializer(serializers.ModelSerializer):
 
             return RoomMemberProxy.obtain_user_room(user_id=user_id)
 
+        @classmethod
+        def obtain_room_member(cls, room_id):
+            if not RoomProxy.exists_room_by_room_id(room_id=room_id):
+                raise serializers.ValidationError('room is not found')
+
+            return list(RoomMemberProxy.obtain_room_member(room_id=room_id))
+
     class RoomMessageSerializer(serializers.ModelSerializer):
         class Meta:
             model = RoomMessage

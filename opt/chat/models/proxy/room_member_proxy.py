@@ -27,5 +27,12 @@ class RoomMemberProxy(RoomMember):
             cls
                 .objects
                 .filter(user_id=user_id)
-                .values('room_id', room_name=F('room__name'))
+                .values('room_id', member_count=F('room__member_count'), room_name=F('room__name'))
         )
+
+    @classmethod
+    def obtain_room_member(cls, room_id):
+        return cls\
+            .objects\
+            .filter(room_id=room_id)\
+            .values('user__name', 'user__id')
