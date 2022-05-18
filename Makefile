@@ -22,7 +22,6 @@ upRelease:
 updRelease:
 	docker-compose \
 	  -f docker-compose-release.yml \
-		-f docker-compose-mysql-release.yml \
 		-f docker-compose-redis.yml \
 		up -d
 
