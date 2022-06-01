@@ -15,14 +15,12 @@ upd:
 upRelease:
 	docker-compose \
 	  -f docker-compose-release.yml \
-		-f docker-compose-mysql-release.yml \
 		-f docker-compose-redis.yml \
 		up
 
 updRelease:
 	docker-compose \
 	  -f docker-compose-release.yml \
-		-f docker-compose-mysql-release.yml \
 		-f docker-compose-redis.yml \
 		up -d
 
@@ -36,6 +34,5 @@ down:
 downRelease:
 	docker-compose \
 	  -f docker-compose-release.yml \
-		-f docker-compose-mysql-release.yml \
 		-f docker-compose-redis.yml \
 		down
