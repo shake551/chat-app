@@ -146,5 +146,5 @@ INSTALLED_APPS += ['corsheaders']
 MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-    'http://hanasu.tk',
+    'https://hanasu.tk',
 )
