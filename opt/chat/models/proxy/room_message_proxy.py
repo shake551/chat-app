@@ -31,5 +31,6 @@ class RoomMessageProxy(RoomMessage):
                 .filter(room_id=room_id)
                 .values('message', time=F('created_at'), user=F('send_user__name'))
                 .order_by('time')
+                .reverse()
                 [start:start+size]
         )
