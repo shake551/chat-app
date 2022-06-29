@@ -61,11 +61,14 @@ class ChatSerializer(serializers.ModelSerializer):
             return RoomMessageProxy.post_message(user_id=user_id, room_id=room_id, message=message)
 
         @classmethod
-        def obtain_room_message(cls, room_id):
+        def obtain_room_message(cls, room_id, start, size):
             if not RoomProxy.exists_room_by_room_id(room_id=room_id):
                 raise serializers.ValidationError('room is not found')
 
-            return RoomMessageProxy.obtain_room_message_list(room_id=room_id)
+            return list(
+                RoomMessageProxy.obtain_room_message_list(room_id=room_id, start=start, size=size)
+                    .__reversed__()
+            )
 
     @classmethod
     @transaction.atomic
