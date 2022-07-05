@@ -34,11 +34,11 @@ class ChatSerializer(serializers.ModelSerializer):
             fields = ['room', 'user']
 
         @classmethod
-        def obtain_user_room(cls, user_id):
+        def obtain_user_room(cls, user_id, start, size):
             if not UserProxy.exists_user_by_user_id(user_id=user_id):
                 raise serializers.ValidationError('user is not found')
 
-            return RoomMemberProxy.obtain_user_room(user_id=user_id)
+            return RoomMemberProxy.obtain_user_room(user_id=user_id, start=start, size=size)
 
         @classmethod
         def obtain_room_member(cls, room_id):

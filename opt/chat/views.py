@@ -70,7 +70,16 @@ def obtain_user_rooms(request):
     jwt_token = get_authorization_header(request).split()[1]
     user_id = obtain_id_from_jwt(jwt_token=jwt_token)
 
-    rooms = ChatSerializer.RoomMemberSerializer.obtain_user_room(user_id=user_id)
+    start = request.GET.get('start')
+    size = request.GET.get('size')
+
+    if start is None:
+        start = 0
+
+    if size is None:
+        size = 20
+
+    rooms = ChatSerializer.RoomMemberSerializer.obtain_user_room(user_id=user_id, start=int(start), size=int(size))
 
     change_room_name_to_user_name(rooms=rooms, user_id=user_id)
 
