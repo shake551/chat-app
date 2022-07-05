@@ -86,8 +86,8 @@ def obtain_user_rooms(request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def obtain_room_msg(request, room_id):
-    start = int(request.GET.get('start'))
-    size = int(request.GET.get('size'))
+    start = request.GET.get('start')
+    size = request.GET.get('size')
 
     if start is None:
         start = 0
@@ -95,7 +95,7 @@ def obtain_room_msg(request, room_id):
     if size is None:
         size = 20
 
-    messages = ChatSerializer.RoomMessageSerializer.obtain_room_message(room_id=room_id, start=start, size=size)
+    messages = ChatSerializer.RoomMessageSerializer.obtain_room_message(room_id=room_id, start=int(start), size=int(size))
 
     room = ChatSerializer.RoomSerializer.obtain_room(room_id=room_id)
 
