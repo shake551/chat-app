@@ -70,7 +70,16 @@ def obtain_user_rooms(request):
     jwt_token = get_authorization_header(request).split()[1]
     user_id = obtain_id_from_jwt(jwt_token=jwt_token)
 
-    rooms = ChatSerializer.RoomMemberSerializer.obtain_user_room(user_id=user_id)
+    start = request.GET.get('start')
+    size = request.GET.get('size')
+
+    if start is None:
+        start = 0
+
+    if size is None:
+        size = 20
+
+    rooms = ChatSerializer.RoomMemberSerializer.obtain_user_room(user_id=user_id, start=int(start), size=int(size))
 
     change_room_name_to_user_name(rooms=rooms, user_id=user_id)
 
@@ -86,7 +95,16 @@ def obtain_user_rooms(request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def obtain_room_msg(request, room_id):
-    messages = ChatSerializer.RoomMessageSerializer.obtain_room_message(room_id=room_id)
+    start = request.GET.get('start')
+    size = request.GET.get('size')
+
+    if start is None:
+        start = 0
+
+    if size is None:
+        size = 20
+
+    messages = ChatSerializer.RoomMessageSerializer.obtain_room_message(room_id=room_id, start=int(start), size=int(size))
 
     room = ChatSerializer.RoomSerializer.obtain_room(room_id=room_id)
 

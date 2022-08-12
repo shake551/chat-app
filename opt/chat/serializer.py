@@ -34,11 +34,11 @@ class ChatSerializer(serializers.ModelSerializer):
             fields = ['room', 'user']
 
         @classmethod
-        def obtain_user_room(cls, user_id):
+        def obtain_user_room(cls, user_id, start, size):
             if not UserProxy.exists_user_by_user_id(user_id=user_id):
                 raise serializers.ValidationError('user is not found')
 
-            return RoomMemberProxy.obtain_user_room(user_id=user_id)
+            return RoomMemberProxy.obtain_user_room(user_id=user_id, start=start, size=size)
 
         @classmethod
         def obtain_room_member(cls, room_id):
@@ -61,11 +61,14 @@ class ChatSerializer(serializers.ModelSerializer):
             return RoomMessageProxy.post_message(user_id=user_id, room_id=room_id, message=message)
 
         @classmethod
-        def obtain_room_message(cls, room_id):
+        def obtain_room_message(cls, room_id, start, size):
             if not RoomProxy.exists_room_by_room_id(room_id=room_id):
                 raise serializers.ValidationError('room is not found')
 
-            return RoomMessageProxy.obtain_room_message_list(room_id=room_id)
+            return list(
+                RoomMessageProxy.obtain_room_message_list(room_id=room_id, start=start, size=size)
+                    .__reversed__()
+            )
 
     @classmethod
     @transaction.atomic
