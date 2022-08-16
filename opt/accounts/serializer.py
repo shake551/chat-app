@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         send_mail(
             '本登録のお願い',
             '以下のリンクにアクセスして本登録を完了してください\n' + verify_url,
-            'admin@example.com',
+            'info.hanasu@gmail.com',
             [user.email],
             fail_silently=False,
         )
