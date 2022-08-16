@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 from django.core.mail import send_mail
 from rest_framework import serializers
 import sys
@@ -17,11 +21,11 @@ class UserSerializer(serializers.ModelSerializer):
     def pre_signup(cls, name, email, password):
         user = UserProxy.pre_signup(name=name, email=email, password=password)
 
-        verify_url = 'http://localhost:3000/verify/' + str(user.urltoken)
+        verify_url = os.environ.get('DOMAIN') + '/verify/' + str(user.urltoken)
         send_mail(
             '本登録のお願い',
             '以下のリンクにアクセスして本登録を完了してください\n' + verify_url,
-            'admin@example.com',
+            os.environ.get('EMAIL_HOST_USER'),
             [user.email],
             fail_silently=False,
         )
