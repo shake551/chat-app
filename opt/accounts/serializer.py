@@ -21,9 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
     def pre_signup(cls, name, email, password):
         user = UserProxy.pre_signup(name=name, email=email, password=password)
 
-        print(os.environ.get('DOMAIN'))
-        print(os.environ.get('EMAIL'))
-
         verify_url = os.environ.get('DOMAIN') + '/verify/' + str(user.urltoken)
         send_mail(
             '本登録のお願い',
