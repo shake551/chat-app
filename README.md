@@ -3,6 +3,10 @@
 ## 概要
 チャットアプリのバックエンド側のプロジェクトです
 
+## Architecture
+<img src="https://user-images.githubusercontent.com/73379887/190436407-bb219fa1-26df-4f64-9c13-2758c54ea7b4.png" width="400"><img src="https://user-images.githubusercontent.com/73379887/190437400-b26981b5-1811-4f35-bf72-adf05206b6ec.png" width="400">
+
+
 ## 動機
 まず、ユーザー関連の機能についてです．
 ユーザー登録や、そのユーザーの権限、ログイン状態の管理といったところで、セキュリティを考えないといけないことが多いと思います．
