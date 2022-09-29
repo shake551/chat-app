@@ -58,6 +58,9 @@ class NormalAuthentication(BaseAuthentication):
         if not user_query:
             raise exceptions.AuthenticationFailed('認証失敗')
 
+        if user_query.status != 1:
+            raise exceptions.AuthenticationFailed('user not verified')
+
         confirmed_password = hash_password(password, user_query.salt)
 
         if confirmed_password != user_query.password:
